@@ -28,7 +28,7 @@ public class MovieEntity
     public int DirectorId { get; set; }
 
     [ForeignKey(nameof(MovieProviderEntity))]
-    public int MovieProviderId { get; set; }
+    public int? MovieProviderId { get; set; }
 
 
     public virtual ProductionCompanyEntity ProductionCompany { get; set; } = null!;

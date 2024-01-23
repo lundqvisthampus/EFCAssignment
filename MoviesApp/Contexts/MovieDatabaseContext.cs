@@ -19,6 +19,7 @@ public class MovieDatabaseContext(DbContextOptions<MovieDatabaseContext> options
 
     /// <summary>
     /// Makes sure that the chosen properties of each entity is unique in the database.
+    /// Also allows the MovieProviderId to be null.
     /// </summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,5 +34,9 @@ public class MovieDatabaseContext(DbContextOptions<MovieDatabaseContext> options
         modelBuilder.Entity<MovieProviderEntity>()
             .HasIndex(x => x.ProviderName)
             .IsUnique();
+
+        modelBuilder.Entity<MovieEntity>()
+            .Property(x => x.MovieProviderId)
+            .IsRequired(false);
     }
 }

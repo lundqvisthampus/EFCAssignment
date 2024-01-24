@@ -84,12 +84,45 @@ public class DirectorRepository
     
 
 
-    // UPDATE
-    public bool Update()
+  /// <summary>
+  /// Tries to update the object/entity in the database.
+  /// </summary>
+  /// <param name="entity">An object of the DirectorEntity class.</param>
+  /// <returns>True if succeded, false if something fails and it throws an exception.</returns>
+    public bool Update(DirectorEntity entity)
     {
-
+        try
+        {
+            _context.Directors.Update(entity);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo updating the director: {ex.Message}");
+            return false;
+        }
     }
 
 
-    // DELETE
+
+    /// <summary>
+    /// Tries to remove a director from the database.
+    /// </summary>
+    /// <param name="entity">An object of the DirectorEntity class.</param>
+    /// <returns>True if succeded, false if something fails and it throws an exception.</returns>
+    public bool Delete(DirectorEntity entity)
+    {
+        try
+        {
+            _context.Directors.Remove(entity);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo removing the director: {ex.Message}");
+            return false;
+        }
+    }
 }

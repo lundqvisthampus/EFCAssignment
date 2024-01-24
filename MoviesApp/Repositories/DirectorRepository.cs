@@ -40,7 +40,7 @@ public class DirectorRepository
 
 
     /// <summary>
-    /// Tries to get one director from the database based on first & lastname, if not 
+    /// Tries to get one director from the database based on first & lastname.
     /// If it fails, error message will be displayed and return null.
     /// </summary>
     /// <param name="firstName">String with directors firstname</param>
@@ -84,7 +84,6 @@ public class DirectorRepository
     }
     
 
-
   /// <summary>
   /// Tries to update the object/entity in the database.
   /// </summary>
@@ -110,7 +109,6 @@ public class DirectorRepository
             return false;
         }
     }
-
 
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MoviesApp;
 using MoviesApp.Contexts;
 
 
@@ -8,5 +9,4 @@ using MoviesApp.Contexts;
 var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 {
     services.AddDbContext<MovieDatabaseContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Coding\EC-code\CSharp\EFCAssignment\MoviesApp\Data\MovieDatabase.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
-
 }).Build();

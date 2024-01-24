@@ -1,4 +1,5 @@
-﻿using MoviesApp.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesApp.Contexts;
 using MoviesApp.Entities;
 using System.Diagnostics;
 
@@ -93,9 +94,15 @@ public class DirectorRepository
     {
         try
         {
-            _context.Directors.Update(entity);
-            _context.SaveChanges();
-            return true;
+            var existingEntity = _context.Directors.FirstOrDefault(x => x.Id == entity.Id);
+            if (existingEntity != null)
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
         catch (Exception ex)
         {

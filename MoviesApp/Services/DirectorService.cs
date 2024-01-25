@@ -1,4 +1,5 @@
-﻿using MoviesApp.Entities;
+﻿using MoviesApp.Dtos;
+using MoviesApp.Entities;
 using MoviesApp.Repositories;
 using System.Diagnostics;
 
@@ -18,19 +19,24 @@ public class DirectorService
    /// </summary>
    /// <param name="entity">Object of directorentity</param>
    /// <returns>Returns the entity, or null.</returns>
-    public DirectorEntity InsertOne(DirectorEntity entity)
+    public DirectorEntity InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(entity.FirstName, entity.LastName);
+            var result = _repository.SelectOne(dto.DirectorFirstName, dto.DirectorLastName);
             if (result == null)
             {
+                var entity = new DirectorEntity();
+                entity.FirstName = dto.DirectorFirstName;
+                entity.LastName = dto.DirectorLastName;
+                entity.BirthDate = dto.DirectorBirthDate;
+
                 _repository.InsertOne(entity);
                 return entity;
             }
             else
             {
-                return null!;
+                return result!;
             }
         }
         catch (Exception ex)
@@ -51,6 +57,23 @@ public class DirectorService
         try
         {
             var director = _repository.SelectOne(firstName, lastName);
+            if (director != null)
+                return director;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the DirectorService when selecting one entity: {ex.Message}");
+            return null!;
+        }
+    }
+
+    public DirectorEntity SelectOne(int Id)
+    {
+        try
+        {
+            var director = _repository.SelectOne(Id);
             if (director != null)
                 return director;
             else

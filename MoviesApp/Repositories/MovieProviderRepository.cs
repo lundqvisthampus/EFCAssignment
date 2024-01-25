@@ -61,6 +61,23 @@ public class MovieProviderRepository
         }
     }
 
+    public MovieProviderEntity SelectOne(int Id)
+    {
+        try
+        {
+            var provider = _context.MovieProviders.FirstOrDefault(x => x.Id == Id);
+            if (provider != null)
+                return provider;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo selecting one movie provider: {ex.Message}");
+            return null!;
+        }
+    }
+
 
     /// <summary>
     /// Tries to select all movie providers from the database.

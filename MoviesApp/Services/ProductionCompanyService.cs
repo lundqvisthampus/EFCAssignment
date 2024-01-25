@@ -1,4 +1,5 @@
-﻿using MoviesApp.Entities;
+﻿using MoviesApp.Dtos;
+using MoviesApp.Entities;
 using MoviesApp.Repositories;
 using System.Diagnostics;
 
@@ -18,13 +19,16 @@ public class ProductionCompanyService
     /// </summary>
     /// <param name="entity">Object of ProductionCompanyEntity</param>
     /// <returns>Returns the entity, or null.</returns>
-    public ProductionCompanyEntity InsertOne(ProductionCompanyEntity entity)
+    public ProductionCompanyEntity InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(entity.CompanyName);
+            var result = _repository.SelectOne(dto.ProductionCompanyName);
             if (result == null)
             {
+                var entity = new ProductionCompanyEntity();
+                entity.CompanyName = dto.ProductionCompanyName;
+
                 _repository.InsertOne(entity);
                 return entity;
             }
@@ -49,6 +53,23 @@ public class ProductionCompanyService
         try
         {
             var company = _repository.SelectOne(companyName);
+            if (company != null)
+                return company;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the ProductionCompanyService when selecting one entity: {ex.Message}");
+            return null!;
+        }
+    }
+
+    public ProductionCompanyEntity SelectOne(int Id)
+    {
+        try
+        {
+            var company = _repository.SelectOne(Id);
             if (company != null)
                 return company;
             else

@@ -1,4 +1,5 @@
-﻿using MoviesApp.Entities;
+﻿using MoviesApp.Dtos;
+using MoviesApp.Entities;
 using MoviesApp.Repositories;
 using System.Diagnostics;
 
@@ -18,13 +19,16 @@ public class GenreService
     /// </summary>
     /// <param name="entity">Object of GenreEntity</param>
     /// <returns>Returns the entity, or null.</returns>
-    public GenreEntity InsertOne(GenreEntity entity)
+    public GenreEntity InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(entity.GenreName);
+            var result = _repository.SelectOne(dto.GenreName);
             if (result == null)
             {
+                var entity = new GenreEntity();
+                entity.GenreName = dto.GenreName;
+
                 _repository.InsertOne(entity);
                 return entity;
             }
@@ -49,6 +53,23 @@ public class GenreService
         try
         {
             var genre = _repository.SelectOne(genreName);
+            if (genre != null)
+                return genre;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the GenreService when selecting one entity: {ex.Message}");
+            return null!;
+        }
+    }
+
+    public GenreEntity SelectOne(int Id)
+    {
+        try
+        {
+            var genre = _repository.SelectOne(Id);
             if (genre != null)
                 return genre;
             else

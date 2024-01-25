@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using MoviesApp;
 using MoviesApp.Contexts;
 using MoviesApp.Repositories;
+using MoviesApp.Services;
 
 
 // Configuring dependency injection for the datacontext with connection string.
@@ -15,4 +16,14 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddSingleton<MovieProviderRepository>();
     services.AddSingleton<MovieRepository>();
     services.AddSingleton<ProductionCompanyRepository>();
+
+    services.AddSingleton<DirectorService>();
+    services.AddSingleton<GenreService>();
+    services.AddSingleton<MovieProviderService>();
+    services.AddSingleton<MovieService>();
+    services.AddSingleton<ProductionCompanyService>();
+    services.AddSingleton<ConsoleMenu>();
 }).Build();
+
+var menu = builder.Services.GetRequiredService<ConsoleMenu>();
+menu.AddTest();

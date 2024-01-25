@@ -62,6 +62,23 @@ public class GenreRepository
         }
     }
 
+    public GenreEntity SelectOne(int Id)
+    {
+        try
+        {
+            var genre = _context.Genres.FirstOrDefault(x => x.Id == Id);
+            if (genre != null)
+                return genre;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo selecting one genre: {ex.Message}");
+            return null!;
+        }
+    }
+
 
     /// <summary>
     /// Tries to select all genres from the database.

@@ -61,6 +61,23 @@ public class ProductionCompanyRepository
         }
     }
 
+    public ProductionCompanyEntity SelectOne(int Id)
+    {
+        try
+        {
+            var productionCompany = _context.ProductionCompanies.FirstOrDefault(x => x.Id == Id);
+            if (productionCompany != null)
+                return productionCompany;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo selecting one production company: {ex.Message}");
+            return null!;
+        }
+    }
+
 
     /// <summary>
     /// Tries to select all production companies from the database.

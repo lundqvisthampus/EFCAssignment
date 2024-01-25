@@ -63,6 +63,23 @@ public class DirectorRepository
         }
     }
 
+    public DirectorEntity SelectOne(int Id)
+    {
+        try
+        {
+            var director = _context.Directors.FirstOrDefault(x => x.Id == Id);
+            if (director != null)
+                return director;
+            else
+                return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"There was an issue in the repo selecting one director: {ex.Message}");
+            return null!;
+        }
+    }
+
 
     /// <summary>
     /// Tries to select all directors from the database.

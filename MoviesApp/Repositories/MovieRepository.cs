@@ -95,7 +95,13 @@ public class MovieRepository
             var existingEntity = _context.Movies.FirstOrDefault(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
-                _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                existingEntity.Title = entity.Title;
+                existingEntity.ReleaseYear = entity.ReleaseYear;
+                existingEntity.DirectorId = entity.DirectorId;
+                existingEntity.GenreId = entity.GenreId;
+                existingEntity.MovieProviderId = entity.MovieProviderId;
+                existingEntity.ProductionCompanyId = entity.ProductionCompanyId;
+
                 _context.SaveChanges();
 
                 return true;

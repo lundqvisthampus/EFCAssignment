@@ -19,17 +19,17 @@ public class GenreService
     /// </summary>
     /// <param name="entity">Object of GenreEntity</param>
     /// <returns>Returns the entity, or null.</returns>
-    public GenreEntity InsertOne(MovieDto dto)
+    public async Task<GenreEntity> InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(dto.GenreName);
+            var result = await _repository.SelectOneAsync(dto.GenreName);
             if (result == null)
             {
                 var entity = new GenreEntity();
                 entity.GenreName = dto.GenreName;
 
-                _repository.InsertOne(entity);
+                await _repository.InsertOneAsync(entity);
                 return entity;
             }
             else
@@ -48,11 +48,11 @@ public class GenreService
     /// Tries to select 1 genre from the database based on name.
     /// </summary>
     /// <returns>Returns either a genre, or null.</returns>
-    public GenreEntity SelectOne(string genreName)
+    public async Task<GenreEntity> SelectOne(string genreName)
     {
         try
         {
-            var genre = _repository.SelectOne(genreName);
+            var genre = await _repository.SelectOneAsync(genreName);
             if (genre != null)
                 return genre;
             else
@@ -65,11 +65,11 @@ public class GenreService
         }
     }
 
-    public GenreEntity SelectOne(int Id)
+    public async Task<GenreEntity> SelectOne(int Id)
     {
         try
         {
-            var genre = _repository.SelectOne(Id);
+            var genre = await _repository.SelectOneAsync(Id);
             if (genre != null)
                 return genre;
             else
@@ -86,11 +86,11 @@ public class GenreService
     /// Tries to select all genres from the database.
     /// </summary>
     /// <returns>Returns a list of genres, or null if an exception was cathed.</returns>
-    public IEnumerable<GenreEntity> SelectAll()
+    public async Task<IEnumerable<GenreEntity>> SelectAll()
     {
         try
         {
-            var listOfGenres = _repository.SelectAll();
+            var listOfGenres = await _repository.SelectAllAsync();
             return listOfGenres;
         }
         catch (Exception ex)
@@ -106,14 +106,14 @@ public class GenreService
     /// </summary>
     /// <param name="entity">Object of the type GenreEntity</param>
     /// <returns>True if updated, else null.</returns>
-    public bool Update(GenreEntity entity)
+    public async Task<bool> Update(GenreEntity entity)
     {
         try
         {
-            var genre = SelectOne(entity.GenreName);
+            var genre = await SelectOne(entity.GenreName);
             if (genre != null)
             {
-                _repository.Update(entity);
+                await _repository.UpdateAsync(entity);
                 return true;
             }
             else
@@ -133,14 +133,14 @@ public class GenreService
     /// </summary>
     /// <param name="entity">Object of GenreEntity</param>
     /// <returns>True if object was deleted, else false.</returns>
-    public bool Delete(GenreEntity entity)
+    public async Task<bool> Delete(GenreEntity entity)
     {
         try
         {
-            var result = SelectOne(entity.GenreName);
+            var result = await SelectOne(entity.GenreName);
             if (result != null)
             {
-                _repository.Delete(entity);
+                await _repository.DeleteAsync(entity);
                 return true;
             }
             else

@@ -1,4 +1,5 @@
-﻿using MoviesApp.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesApp.Contexts;
 using MoviesApp.Entities;
 using System.Diagnostics;
 
@@ -23,12 +24,12 @@ public class MovieRepository
     /// </summary>
     /// <param name="entity">An object of the MovieEntity class.</param>
     /// <returns>Returns the entity if inserted, else returns null</returns>
-    public MovieEntity InsertOne(MovieEntity entity)
+    public async Task<MovieEntity> InsertOneAsync(MovieEntity entity)
     {
         try
         {
             _context.Movies.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
         catch (Exception ex)
@@ -45,11 +46,11 @@ public class MovieRepository
     /// </summary>
     /// <param name="movieTitle">String with name of the movie</param>
     /// <returns>Returns object if successfull. If object not found / fails it will return null.</returns>
-    public MovieEntity SelectOne(string movieTitle)
+    public async Task<MovieEntity> SelectOneAsync(string movieTitle)
     {
         try
         {
-            var movie = _context.Movies.FirstOrDefault(x => x.Title == movieTitle);
+            var movie = await _context.Movies.FirstOrDefaultAsync(x => x.Title == movieTitle);
             if (movie != null)
                 return movie;
             else
@@ -68,11 +69,11 @@ public class MovieRepository
     /// If it fails, error message will be displayed and return null. 
     /// </summary>
     /// <returns>Returns a list of movies, even if its empty. Or returns null if failed.</returns>
-    public IEnumerable<MovieEntity> SelectAll()
+    public async Task<IEnumerable<MovieEntity>> SelectAllAsync()
     {
         try
         {
-            var movieList = _context.Movies.ToList();
+            var movieList = await _context.Movies.ToListAsync();
             return movieList;
         }
         catch (Exception ex)
@@ -88,11 +89,11 @@ public class MovieRepository
     /// </summary>
     /// <param name="entity">An object of the MovieEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Update(MovieEntity entity)
+    public async Task<bool> UpdateAsync(MovieEntity entity)
     {
         try
         {
-            var existingEntity = _context.Movies.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await _context.Movies.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
                 existingEntity.Title = entity.Title;
@@ -102,7 +103,7 @@ public class MovieRepository
                 existingEntity.MovieProviderId = entity.MovieProviderId;
                 existingEntity.ProductionCompanyId = entity.ProductionCompanyId;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -121,12 +122,12 @@ public class MovieRepository
     /// </summary>
     /// <param name="entity">An object of the MovieEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Delete(MovieEntity entity)
+    public async Task<bool> DeleteAsync(MovieEntity entity)
     {
         try
         {
             _context.Movies.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

@@ -19,11 +19,11 @@ public class DirectorService
    /// </summary>
    /// <param name="entity">Object of directorentity</param>
    /// <returns>Returns the entity, or null.</returns>
-    public DirectorEntity InsertOne(MovieDto dto)
+    public async Task<DirectorEntity> InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(dto.DirectorFirstName, dto.DirectorLastName);
+            var result = await _repository.SelectOneAsync(dto.DirectorFirstName, dto.DirectorLastName);
             if (result == null)
             {
                 var entity = new DirectorEntity();
@@ -31,7 +31,7 @@ public class DirectorService
                 entity.LastName = dto.DirectorLastName;
                 entity.BirthDate = dto.DirectorBirthDate;
 
-                _repository.InsertOne(entity);
+                await _repository.InsertOneAsync(entity);
                 return entity;
             }
             else
@@ -52,11 +52,11 @@ public class DirectorService
  /// <param name="firstName">Directors firstname</param>
  /// <param name="lastName">Directors lastname</param>
  /// <returns>Returns either a director, or null.</returns>
-    public DirectorEntity SelectOne(string firstName, string lastName)
+    public async Task<DirectorEntity> SelectOne(string firstName, string lastName)
     {
         try
         {
-            var director = _repository.SelectOne(firstName, lastName);
+            var director = await _repository.SelectOneAsync(firstName, lastName);
             if (director != null)
                 return director;
             else
@@ -69,11 +69,11 @@ public class DirectorService
         }
     }
 
-    public DirectorEntity SelectOne(int Id)
+    public async Task<DirectorEntity> SelectOne(int Id)
     {
         try
         {
-            var director = _repository.SelectOne(Id);
+            var director = await _repository.SelectOneAsync(Id);
             if (director != null)
                 return director;
             else
@@ -90,11 +90,11 @@ public class DirectorService
     /// Tries to select all directors from the database.
     /// </summary>
     /// <returns>Returns a list of directors, or null if an exception was cathed.</returns>
-    public IEnumerable<DirectorEntity> SelectAll() 
+    public async Task<IEnumerable<DirectorEntity>> SelectAll() 
     {
         try
         {
-            var listOfDirectors = _repository.SelectAll();
+            var listOfDirectors = await _repository.SelectAllAsync();
             return listOfDirectors;
         }
         catch (Exception ex)
@@ -110,14 +110,14 @@ public class DirectorService
   /// </summary>
   /// <param name="entity">Object of the type DirectorEntity</param>
   /// <returns>True if updated, else null.</returns>
-    public bool Update(DirectorEntity entity)
+    public async Task<bool> Update(DirectorEntity entity)
     {
         try
         {
-            var director = SelectOne(entity.FirstName, entity.LastName);
+            var director = await SelectOne(entity.FirstName, entity.LastName);
             if (director != null)
             {
-                _repository.Update(entity);
+                await _repository.UpdateAsync(entity);
                 return true;
             }
             else
@@ -137,14 +137,14 @@ public class DirectorService
   /// </summary>
   /// <param name="entity">Object of DirectorEntity</param>
   /// <returns>True if object was deleted, else false.</returns>
-    public bool Delete(DirectorEntity entity)
+    public async Task<bool> Delete(DirectorEntity entity)
     {
         try
         {
-            var result = SelectOne(entity.FirstName, entity.LastName);
+            var result = await SelectOne(entity.FirstName, entity.LastName);
             if (result != null)
             {
-                _repository.Delete(entity);
+                await _repository.DeleteAsync(entity);
                 return true;
             }
             else

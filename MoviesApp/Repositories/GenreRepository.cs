@@ -1,4 +1,5 @@
-﻿using MoviesApp.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesApp.Contexts;
 using MoviesApp.Entities;
 using System.Diagnostics;
 
@@ -23,12 +24,12 @@ public class GenreRepository
     /// </summary>
     /// <param name="entity">An object of the GenreEntity class.</param>
     /// <returns>Returns the entity if inserted, else returns null</returns>
-    public GenreEntity InsertOne(GenreEntity entity)
+    public async Task<GenreEntity> InsertOneAsync(GenreEntity entity)
     {
         try
         {
             _context.Genres.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
         catch (Exception ex)
@@ -45,11 +46,11 @@ public class GenreRepository
     /// </summary>
     /// <param name="genreName">String with name of the genre</param>
     /// <returns>Returns object if successfull. If object not found / fails it will return null.</returns>
-    public GenreEntity SelectOne(string genreName)
+    public async Task<GenreEntity> SelectOneAsync(string genreName)
     {
         try
         {
-            var genre = _context.Genres.FirstOrDefault(x => x.GenreName == genreName);
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.GenreName == genreName);
             if (genre != null)
                 return genre;
             else
@@ -62,11 +63,11 @@ public class GenreRepository
         }
     }
 
-    public GenreEntity SelectOne(int Id)
+    public async Task<GenreEntity> SelectOneAsync(int Id)
     {
         try
         {
-            var genre = _context.Genres.FirstOrDefault(x => x.Id == Id);
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == Id);
             if (genre != null)
                 return genre;
             else
@@ -85,11 +86,11 @@ public class GenreRepository
     /// If it fails, error message will be displayed and return null. 
     /// </summary>
     /// <returns>Returns a list of genres, even if its empty. Or returns null if failed.</returns>
-    public IEnumerable<GenreEntity> SelectAll()
+    public async Task<IEnumerable<GenreEntity>> SelectAllAsync()
     {
         try
         {
-            var genresList = _context.Genres.ToList();
+            var genresList = await _context.Genres.ToListAsync();
             return genresList;
         }
         catch (Exception ex)
@@ -105,15 +106,15 @@ public class GenreRepository
     /// </summary>
     /// <param name="entity">An object of the GenreEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Update(GenreEntity entity)
+    public async Task<bool> UpdateAsync(GenreEntity entity)
     {
         try
         {
-            var existingEntity = _context.Genres.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await _context.Genres.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
                 _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -132,12 +133,12 @@ public class GenreRepository
     /// </summary>
     /// <param name="entity">An object of the GenreEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Delete(GenreEntity entity)
+    public async Task<bool> DeleteAsync(GenreEntity entity)
     {
         try
         {
             _context.Genres.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

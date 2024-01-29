@@ -23,12 +23,12 @@ public class DirectorRepository
     /// </summary>
     /// <param name="entity">An object of the DirectorEntity class.</param>
     /// <returns>Returns the entity if inserted, else returns null</returns>
-    public DirectorEntity InsertOne(DirectorEntity entity)
+    public async Task<DirectorEntity> InsertOneAsync(DirectorEntity entity)
     {
         try
         {
             _context.Directors.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
         catch (Exception ex)
@@ -46,11 +46,11 @@ public class DirectorRepository
     /// <param name="firstName">String with directors firstname</param>
     /// <param name="lastName">String with directors lastname</param>
     /// <returns>Returns object if successfull. If object not found / fails it will return null.</returns>
-    public DirectorEntity SelectOne(string firstName, string lastName)
+    public async Task<DirectorEntity> SelectOneAsync(string firstName, string lastName)
     {
         try
         {
-            var director = _context.Directors.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            var director = await _context.Directors.FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
             if (director != null)
                 return director;
             else
@@ -63,11 +63,11 @@ public class DirectorRepository
         }
     }
 
-    public DirectorEntity SelectOne(int Id)
+    public async Task<DirectorEntity> SelectOneAsync(int Id)
     {
         try
         {
-            var director = _context.Directors.FirstOrDefault(x => x.Id == Id);
+            var director = await _context.Directors.FirstOrDefaultAsync(x => x.Id == Id);
             if (director != null)
                 return director;
             else
@@ -86,11 +86,11 @@ public class DirectorRepository
     /// If it fails, error message will be displayed and return null. 
     /// </summary>
     /// <returns>Returns the list of directors, even if its empty. Or returns null if failed.</returns>
-    public IEnumerable<DirectorEntity> SelectAll() 
+    public async Task<IEnumerable<DirectorEntity>> SelectAllAsync() 
     {
         try
         {
-            var directorsList = _context.Directors.ToList();
+            var directorsList = await _context.Directors.ToListAsync();
             return directorsList;
         }
         catch (Exception ex)
@@ -106,15 +106,15 @@ public class DirectorRepository
   /// </summary>
   /// <param name="entity">An object of the DirectorEntity class.</param>
   /// <returns>True if succeded, false if something fails and it throws an exception.</returns>
-    public bool Update(DirectorEntity entity)
+    public async Task<bool> UpdateAsync(DirectorEntity entity)
     {
         try
         {
-            var existingEntity = _context.Directors.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await _context.Directors.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
                 _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -133,12 +133,12 @@ public class DirectorRepository
     /// </summary>
     /// <param name="entity">An object of the DirectorEntity class.</param>
     /// <returns>True if succeded, false if something fails and it throws an exception.</returns>
-    public bool Delete(DirectorEntity entity)
+    public async Task<bool> DeleteAsync(DirectorEntity entity)
     {
         try
         {
             _context.Directors.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

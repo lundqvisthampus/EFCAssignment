@@ -19,17 +19,17 @@ public class ProductionCompanyService
     /// </summary>
     /// <param name="entity">Object of ProductionCompanyEntity</param>
     /// <returns>Returns the entity, or null.</returns>
-    public ProductionCompanyEntity InsertOne(MovieDto dto)
+    public async Task<ProductionCompanyEntity> InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(dto.ProductionCompanyName);
+            var result = await _repository.SelectOneAsync(dto.ProductionCompanyName);
             if (result == null)
             {
                 var entity = new ProductionCompanyEntity();
                 entity.CompanyName = dto.ProductionCompanyName;
 
-                _repository.InsertOne(entity);
+                await _repository.InsertOneAsync(entity);
                 return entity;
             }
             else
@@ -48,11 +48,11 @@ public class ProductionCompanyService
     /// Tries to select 1 company from the database based on name.
     /// </summary>
     /// <returns>Returns either a company, or null.</returns>
-    public ProductionCompanyEntity SelectOne(string companyName)
+    public async Task<ProductionCompanyEntity> SelectOne(string companyName)
     {
         try
         {
-            var company = _repository.SelectOne(companyName);
+            var company = await _repository.SelectOneAsync(companyName);
             if (company != null)
                 return company;
             else
@@ -65,11 +65,11 @@ public class ProductionCompanyService
         }
     }
 
-    public ProductionCompanyEntity SelectOne(int Id)
+    public async Task<ProductionCompanyEntity> SelectOne(int Id)
     {
         try
         {
-            var company = _repository.SelectOne(Id);
+            var company = await _repository.SelectOneAsync(Id);
             if (company != null)
                 return company;
             else
@@ -86,11 +86,11 @@ public class ProductionCompanyService
     /// Tries to select all companies from the database.
     /// </summary>
     /// <returns>Returns a list of companies, or null if an exception was cathed.</returns>
-    public IEnumerable<ProductionCompanyEntity> SelectAll()
+    public async Task<IEnumerable<ProductionCompanyEntity>> SelectAll()
     {
         try
         {
-            var listOfCompanies = _repository.SelectAll();
+            var listOfCompanies = await _repository.SelectAllAsync();
             return listOfCompanies;
         }
         catch (Exception ex)
@@ -106,14 +106,14 @@ public class ProductionCompanyService
     /// </summary>
     /// <param name="entity">Object of the type ProductionCompanyEntity</param>
     /// <returns>True if updated, else null.</returns>
-    public bool Update(ProductionCompanyEntity entity)
+    public async Task<bool> Update(ProductionCompanyEntity entity)
     {
         try
         {
-            var company = SelectOne(entity.CompanyName);
+            var company = await SelectOne(entity.CompanyName);
             if (company != null)
             {
-                _repository.Update(entity);
+                await _repository.UpdateAsync(entity);
                 return true;
             }
             else
@@ -133,14 +133,14 @@ public class ProductionCompanyService
     /// </summary>
     /// <param name="entity">Object of ProductionCompanyEntity</param>
     /// <returns>True if object was deleted, else false.</returns>
-    public bool Delete(ProductionCompanyEntity entity)
+    public async Task<bool> Delete(ProductionCompanyEntity entity)
     {
         try
         {
-            var result = SelectOne(entity.CompanyName);
+            var result = await SelectOne(entity.CompanyName);
             if (result != null)
             {
-                _repository.Delete(entity);
+                await _repository.DeleteAsync(entity);
                 return true;
             }
             else

@@ -1,4 +1,5 @@
-﻿using MoviesApp.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesApp.Contexts;
 using MoviesApp.Entities;
 using System.Diagnostics;
 
@@ -22,12 +23,12 @@ public class ProductionCompanyRepository
     /// </summary>
     /// <param name="entity">An object of the Productioncompanyentity class.</param>
     /// <returns>Returns the entity if inserted, else returns null</returns>
-    public ProductionCompanyEntity InsertOne(ProductionCompanyEntity entity)
+    public async Task<ProductionCompanyEntity> InsertOneAsync(ProductionCompanyEntity entity)
     {
         try
         {
             _context.ProductionCompanies.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
         catch (Exception ex)
@@ -44,11 +45,11 @@ public class ProductionCompanyRepository
     /// </summary>
     /// <param name="companyName">String with name of the production company</param>
     /// <returns>Returns object if successfull. If object not found / fails it will return null.</returns>
-    public ProductionCompanyEntity SelectOne(string companyName)
+    public async Task<ProductionCompanyEntity> SelectOneAsync(string companyName)
     {
         try
         {
-            var productionCompany = _context.ProductionCompanies.FirstOrDefault(x => x.CompanyName == companyName);
+            var productionCompany = await _context.ProductionCompanies.FirstOrDefaultAsync(x => x.CompanyName == companyName);
             if (productionCompany != null)
                 return productionCompany;
             else
@@ -61,11 +62,11 @@ public class ProductionCompanyRepository
         }
     }
 
-    public ProductionCompanyEntity SelectOne(int Id)
+    public async Task<ProductionCompanyEntity> SelectOneAsync(int Id)
     {
         try
         {
-            var productionCompany = _context.ProductionCompanies.FirstOrDefault(x => x.Id == Id);
+            var productionCompany = await _context.ProductionCompanies.FirstOrDefaultAsync(x => x.Id == Id);
             if (productionCompany != null)
                 return productionCompany;
             else
@@ -84,11 +85,11 @@ public class ProductionCompanyRepository
     /// If it fails, error message will be displayed and return null. 
     /// </summary>
     /// <returns>Returns a list of production companies, even if its empty. Or returns null if failed.</returns>
-    public IEnumerable<ProductionCompanyEntity> SelectAll()
+    public async Task<IEnumerable<ProductionCompanyEntity>> SelectAllAsync()
     {
         try
         {
-            var companyList = _context.ProductionCompanies.ToList();
+            var companyList = await _context.ProductionCompanies.ToListAsync();
             return companyList;
         }
         catch (Exception ex)
@@ -104,15 +105,15 @@ public class ProductionCompanyRepository
     /// </summary>
     /// <param name="entity">An object of the ProductionCompany class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Update(ProductionCompanyEntity entity)
+    public async Task<bool> UpdateAsync(ProductionCompanyEntity entity)
     {
         try
         {
-            var existingEntity = _context.ProductionCompanies.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await _context.ProductionCompanies.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
                 _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -131,12 +132,12 @@ public class ProductionCompanyRepository
     /// </summary>
     /// <param name="entity">An object of the ProductionCompanyEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Delete(ProductionCompanyEntity entity)
+    public async Task<bool> DeleteAsync(ProductionCompanyEntity entity)
     {
         try
         {
             _context.ProductionCompanies.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

@@ -19,16 +19,16 @@ public class MovieProviderService
     /// </summary>
     /// <param name="entity">Object of MovieProviderEntity</param>
     /// <returns>Returns the entity, or null.</returns>
-    public MovieProviderEntity InsertOne(MovieDto dto)
+    public async Task<MovieProviderEntity> InsertOne(MovieDto dto)
     {
         try
         {
-            var result = _repository.SelectOne(dto.ProviderName);
+            var result = await _repository.SelectOneAsync(dto.ProviderName);
             if (result == null)
             {
                 MovieProviderEntity entity = new MovieProviderEntity();
                 entity.ProviderName = dto.ProviderName;
-                _repository.InsertOne(entity);
+                await _repository.InsertOneAsync(entity);
                 return entity;
             }
             else
@@ -47,11 +47,11 @@ public class MovieProviderService
     /// Tries to select 1 provider from the database based on name.
     /// </summary>
     /// <returns>Returns either a provider, or null.</returns>
-    public MovieProviderEntity SelectOne(string providerName)
+    public async Task<MovieProviderEntity> SelectOne(string providerName)
     {
         try
         {
-            var provider = _repository.SelectOne(providerName);
+            var provider = await _repository.SelectOneAsync(providerName);
             if (provider != null)
                 return provider;
             else
@@ -64,11 +64,11 @@ public class MovieProviderService
         }
     }
 
-    public MovieProviderEntity SelectOne(int Id)
+    public async Task<MovieProviderEntity> SelectOne(int Id)
     {
         try
         {
-            var provider = _repository.SelectOne(Id);
+            var provider = await _repository.SelectOneAsync(Id);
             if (provider != null)
                 return provider;
             else
@@ -85,11 +85,11 @@ public class MovieProviderService
     /// Tries to select all providers from the database.
     /// </summary>
     /// <returns>Returns a list of providers, or null if an exception was cathed.</returns>
-    public IEnumerable<MovieProviderEntity> SelectAll()
+    public async Task<IEnumerable<MovieProviderEntity>> SelectAll()
     {
         try
         {
-            var listOfProviders = _repository.SelectAll();
+            var listOfProviders = await _repository.SelectAllAsync();
             return listOfProviders;
         }
         catch (Exception ex)
@@ -105,14 +105,14 @@ public class MovieProviderService
     /// </summary>
     /// <param name="entity">Object of the type MovieProviderEntity</param>
     /// <returns>True if updated, else null.</returns>
-    public bool Update(MovieProviderEntity entity)
+    public async Task<bool> Update(MovieProviderEntity entity)
     {
         try
         {
-            var provider = SelectOne(entity.ProviderName);
+            var provider = await SelectOne(entity.ProviderName);
             if (provider != null)
             {
-                _repository.Update(entity);
+                await _repository.UpdateAsync(entity);
                 return true;
             }
             else
@@ -132,14 +132,14 @@ public class MovieProviderService
     /// </summary>
     /// <param name="entity">Object of MovieProviderEntity</param>
     /// <returns>True if object was deleted, else false.</returns>
-    public bool Delete(MovieProviderEntity entity)
+    public async Task<bool> Delete(MovieProviderEntity entity)
     {
         try
         {
-            var result = SelectOne(entity.ProviderName);
+            var result = await SelectOne(entity.ProviderName);
             if (result != null)
             {
-                _repository.Delete(entity);
+                await _repository.DeleteAsync(entity);
                 return true;
             }
             else

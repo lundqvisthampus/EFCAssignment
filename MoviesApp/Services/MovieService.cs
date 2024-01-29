@@ -24,38 +24,38 @@ public class MovieService
     }
 
     // CREATE
-    public bool InsertOne(MovieDto movieDto)
+    public async Task<bool> InsertOne(MovieDto movieDto)
     {
         try
         {
-            _directorService.InsertOne(movieDto);
-            _genreService.InsertOne(movieDto);
-            _movieProviderService.InsertOne(movieDto);
-            _productionCompanyService.InsertOne(movieDto);
+            await _directorService.InsertOne(movieDto);
+            await _genreService.InsertOne(movieDto);
+            await _movieProviderService.InsertOne(movieDto);
+            await _productionCompanyService.InsertOne(movieDto);
 
             MovieEntity movieEntity = new MovieEntity();
             movieEntity.Title = movieDto.Title;
             movieEntity.ReleaseYear = movieDto.ReleaseYear;
 
-            var director = _directorService.SelectOne(movieDto.DirectorFirstName, movieDto.DirectorLastName);
+            var director = await _directorService.SelectOne(movieDto.DirectorFirstName, movieDto.DirectorLastName);
             movieEntity.DirectorId = director.Id;
 
-            var genre = _genreService.SelectOne(movieDto.GenreName);
+            var genre = await _genreService.SelectOne(movieDto.GenreName);
             movieEntity.GenreId = genre.Id;
 
-            var movieProvider = _movieProviderService.SelectOne(movieDto.ProviderName);
+            var movieProvider = await _movieProviderService.SelectOne(movieDto.ProviderName);
             if (movieProvider != null)
             {
                 movieEntity.MovieProviderId = movieProvider.Id;
             }
 
-            var productionCompany = _productionCompanyService.SelectOne(movieDto.ProductionCompanyName);
+            var productionCompany = await _productionCompanyService.SelectOne(movieDto.ProductionCompanyName);
             movieEntity.ProductionCompanyId = productionCompany.Id;
 
-            var result = _movieRepository.SelectOne(movieEntity.Title);
+            var result = await _movieRepository.SelectOneAsync(movieEntity.Title);
             if (result == null)
             {
-                _movieRepository.InsertOne(movieEntity);
+                await _movieRepository.InsertOneAsync(movieEntity);
                 return true;
             }
             else
@@ -72,19 +72,19 @@ public class MovieService
 
     // READ
 
-    public MovieDto SelectOne(string movieTitle)
+    public async Task<MovieDto> SelectOne(string movieTitle)
     {
         try
         {
-            var movie = _movieRepository.SelectOne(movieTitle);
+            var movie = await _movieRepository.SelectOneAsync(movieTitle);
             if (movie != null)
             {
-                MovieDto movieDto = new MovieDto();
-                var director = _directorService.SelectOne(movie.DirectorId);
-                var genre = _genreService.SelectOne(movie.GenreId);
-                var movieProvider = _movieProviderService.SelectOne(movie.MovieProviderId ?? 0);
-                var productionCompany = _productionCompanyService.SelectOne(movie.ProductionCompanyId);
+                var director = await _directorService.SelectOne(movie.DirectorId);
+                var genre = await _genreService.SelectOne(movie.GenreId);
+                var movieProvider = await _movieProviderService.SelectOne(movie.MovieProviderId ?? 0);
+                var productionCompany = await _productionCompanyService.SelectOne(movie.ProductionCompanyId);
 
+                MovieDto movieDto = new MovieDto();
                 movieDto.Title = movie.Title;
                 movieDto.ReleaseYear = movie.ReleaseYear;
                 movieDto.DirectorFirstName = director.FirstName;
@@ -109,23 +109,23 @@ public class MovieService
 
 
 
-    public IEnumerable<MovieDto> SelectAll()
+    public async Task<IEnumerable<MovieDto>> SelectAll()
     {
         List<MovieDto> moviesList = new();
 
         try
         {
-            var result = _movieRepository.SelectAll();
+            var result = await _movieRepository.SelectAllAsync();
 
             if (result != null && result.Any())
             {
                 foreach (var movie in result)
                 {
                     MovieDto movieDto = new MovieDto();
-                    var director = _directorService.SelectOne(movie.DirectorId);
-                    var genre = _genreService.SelectOne(movie.GenreId);
-                    var movieProvider = _movieProviderService.SelectOne(movie.MovieProviderId ?? 0);
-                    var productionCompany = _productionCompanyService.SelectOne(movie.ProductionCompanyId);
+                    var director = await _directorService.SelectOne(movie.DirectorId);
+                    var genre = await _genreService.SelectOne(movie.GenreId);
+                    var movieProvider = await _movieProviderService.SelectOne(movie.MovieProviderId ?? 0);
+                    var productionCompany = await _productionCompanyService.SelectOne(movie.ProductionCompanyId);
 
                     movieDto.Title = movie.Title;
                     movieDto.ReleaseYear = movie.ReleaseYear;
@@ -153,24 +153,24 @@ public class MovieService
     }
 
     // UPDATE
-    public bool Update(MovieDto movieDto, string titleOfMovieToUpdate)
+    public async Task<bool> Update(MovieDto movieDto, string titleOfMovieToUpdate)
     {
-        var movie = _movieRepository.SelectOne(titleOfMovieToUpdate);
+        var movie = await _movieRepository.SelectOneAsync(titleOfMovieToUpdate);
         if (movie != null)
         {
             try
             {
-                _directorService.InsertOne(movieDto);
-                var director = _directorService.SelectOne(movieDto.DirectorFirstName, movieDto.DirectorLastName);
+                await _directorService.InsertOne(movieDto);
+                var director = await _directorService.SelectOne(movieDto.DirectorFirstName, movieDto.DirectorLastName);
 
-                _genreService.InsertOne(movieDto);
-                var genre = _genreService.SelectOne(movieDto.GenreName);
+                await _genreService.InsertOne(movieDto);
+                var genre = await _genreService.SelectOne(movieDto.GenreName);
 
-                _movieProviderService.InsertOne(movieDto);
-                var provider = _movieProviderService.SelectOne(movieDto.ProviderName);
+                await _movieProviderService.InsertOne(movieDto);
+                var provider = await _movieProviderService.SelectOne(movieDto.ProviderName);
 
-                _productionCompanyService.InsertOne(movieDto);
-                var productionCompany = _productionCompanyService.SelectOne(movieDto.ProductionCompanyName);
+                await _productionCompanyService.InsertOne(movieDto);
+                var productionCompany = await _productionCompanyService.SelectOne(movieDto.ProductionCompanyName);
 
                 MovieEntity entity = new MovieEntity();
                 entity.Id = movie.Id;
@@ -181,7 +181,7 @@ public class MovieService
                 entity.MovieProviderId = provider.Id;
                 entity.ProductionCompanyId = productionCompany.Id;
 
-                _movieRepository.Update(entity);
+                await _movieRepository.UpdateAsync(entity);
                 return true;
             }
             catch (Exception ex)
@@ -194,14 +194,14 @@ public class MovieService
     }
 
     // DELETE
-    public bool Delete(string movieTitle)
+    public async Task<bool> Delete(string movieTitle)
     {
-        var movie = _movieRepository.SelectOne(movieTitle);
+        var movie = await _movieRepository.SelectOneAsync(movieTitle);
         try
         {
             if (movie != null)
             {
-                var result = _movieRepository.Delete(movie);
+                var result = await _movieRepository.DeleteAsync(movie);
                 return result;
             }
             else

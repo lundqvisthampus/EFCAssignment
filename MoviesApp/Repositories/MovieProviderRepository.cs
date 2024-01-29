@@ -1,4 +1,5 @@
-﻿using MoviesApp.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesApp.Contexts;
 using MoviesApp.Entities;
 using System.Diagnostics;
 
@@ -22,12 +23,12 @@ public class MovieProviderRepository
     /// </summary>
     /// <param name="entity">An object of the MovieProvider class.</param>
     /// <returns>Returns the entity if inserted, else returns null</returns>
-    public MovieProviderEntity InsertOne(MovieProviderEntity entity)
+    public async Task<MovieProviderEntity> InsertOneAsync(MovieProviderEntity entity)
     {
         try
         {
             _context.MovieProviders.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
         catch (Exception ex)
@@ -44,11 +45,11 @@ public class MovieProviderRepository
     /// </summary>
     /// <param name="providerName">String with name of the provider</param>
     /// <returns>Returns object if successfull. If object not found / fails it will return null.</returns>
-    public MovieProviderEntity SelectOne(string providerName)
+    public async Task<MovieProviderEntity> SelectOneAsync(string providerName)
     {
         try
         {
-            var provider = _context.MovieProviders.FirstOrDefault(x => x.ProviderName == providerName);
+            var provider = await _context.MovieProviders.FirstOrDefaultAsync(x => x.ProviderName == providerName);
             if (provider != null)
                 return provider;
             else
@@ -61,11 +62,11 @@ public class MovieProviderRepository
         }
     }
 
-    public MovieProviderEntity SelectOne(int Id)
+    public async Task<MovieProviderEntity> SelectOneAsync(int Id)
     {
         try
         {
-            var provider = _context.MovieProviders.FirstOrDefault(x => x.Id == Id);
+            var provider = await _context.MovieProviders.FirstOrDefaultAsync(x => x.Id == Id);
             if (provider != null)
                 return provider;
             else
@@ -84,11 +85,11 @@ public class MovieProviderRepository
     /// If it fails, error message will be displayed and return null. 
     /// </summary>
     /// <returns>Returns a list of movie providers, even if its empty. Or returns null if failed.</returns>
-    public IEnumerable<MovieProviderEntity> SelectAll()
+    public async Task<IEnumerable<MovieProviderEntity>> SelectAllAsync()
     {
         try
         {
-            var providerList = _context.MovieProviders.ToList();
+            var providerList = await _context.MovieProviders.ToListAsync();
             return providerList;
         }
         catch (Exception ex)
@@ -104,15 +105,15 @@ public class MovieProviderRepository
     /// </summary>
     /// <param name="entity">An object of the MovieProvider class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Update(MovieProviderEntity entity)
+    public async Task<bool> UpdateAsync(MovieProviderEntity entity)
     {
         try
         {
-            var existingEntity = _context.MovieProviders.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await _context.MovieProviders.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity != null)
             {
                 _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -131,12 +132,12 @@ public class MovieProviderRepository
     /// </summary>
     /// <param name="entity">An object of the MovieProviderEntity class.</param>
     /// <returns>Returns true if succeeded, false if something fails and it throws an exception.</returns>
-    public bool Delete(MovieProviderEntity entity)
+    public async Task<bool> DeleteAsync(MovieProviderEntity entity)
     {
         try
         {
             _context.MovieProviders.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

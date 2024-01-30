@@ -15,7 +15,7 @@ public class ConsoleMenu
         _movieService = movieService;
     }
     
-    public void ShowMenu()
+    public async Task ShowMenu()
     {
         while (true)
         {
@@ -136,7 +136,7 @@ public class ConsoleMenu
                             Console.WriteLine("Please enter a genre.");
                         }
 
-                        var result = _movieService.InsertOne(movie);
+                        var result = await _movieService.InsertOne(movie);
 
                         if (result)
                         {
@@ -154,7 +154,7 @@ public class ConsoleMenu
 
                     case 2:
 
-                        var moviesList = _movieService.SelectAll();
+                        var moviesList = await _movieService.SelectAll();
 
                         Console.Clear();
                         Console.WriteLine("-- All movies currently in the list --");
@@ -182,7 +182,7 @@ public class ConsoleMenu
                         string option = Console.ReadLine()!;
                         if (!string.IsNullOrEmpty(option))
                         {
-                            var findMovie = _movieService.SelectOne(option);
+                            var findMovie = await _movieService.SelectOne(option);
                             Console.Clear();
                             if (findMovie != null)
                             {
@@ -213,7 +213,7 @@ public class ConsoleMenu
                         if (!string.IsNullOrEmpty(updateMovie))
                         {
                             MovieDto movieDto = new MovieDto();
-                            var movieToUpdate = _movieService.SelectOne(updateMovie);
+                            var movieToUpdate = await _movieService.SelectOne(updateMovie);
 
                             Console.Clear();
                             Console.WriteLine("-- Selected movie --");
@@ -255,7 +255,7 @@ public class ConsoleMenu
                             Console.Write("New movie provider (Ex. Netflix): ");
                             movieDto.ProviderName = Console.ReadLine()!;
 
-                            var isUpdated = _movieService.Update(movieDto, updateMovie);
+                            var isUpdated = await _movieService.Update(movieDto, updateMovie);
                             Console.Clear();
                             if (isUpdated)
                             {
@@ -275,7 +275,7 @@ public class ConsoleMenu
                         string movieToDelete = Console.ReadLine()!;
                         if (movieToDelete != null)
                         {
-                            var wasDeleted = _movieService.Delete(movieToDelete);
+                            var wasDeleted = await _movieService.Delete(movieToDelete);
                             Console.Clear();
                             if (wasDeleted)
                             {

@@ -109,7 +109,7 @@ public class MovieProviderService
     {
         try
         {
-            var provider = await SelectOne(entity.ProviderName);
+            var provider = await SelectOne(entity.Id);
             if (provider != null)
             {
                 await _repository.UpdateAsync(entity);

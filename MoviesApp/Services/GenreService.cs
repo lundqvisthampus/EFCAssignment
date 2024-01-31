@@ -110,7 +110,7 @@ public class GenreService
     {
         try
         {
-            var genre = await SelectOne(entity.GenreName);
+            var genre = await SelectOne(entity.Id);
             if (genre != null)
             {
                 await _repository.UpdateAsync(entity);

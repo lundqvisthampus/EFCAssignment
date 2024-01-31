@@ -41,7 +41,7 @@ public class ProductionCompanyRepository_Tests
     }
 
     [Fact]
-    public async Task SelectOneAsync_ShouldGetOneProductionCompanyEntityFromDatabase_ReturnEntity()
+    public async Task SelectOneAsync_ShouldGetOneProductionCompanyEntityFromDatabase_ByName_ReturnEntity()
     {
         // Arrange
         var productionCompanyRepository = new ProductionCompanyRepository(_context);
@@ -50,6 +50,21 @@ public class ProductionCompanyRepository_Tests
 
         // Act
         var result = await productionCompanyRepository.SelectOneAsync(productionCompanyEntity.CompanyName);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task SelectOneAsync_ShouldGetOneProductionCompanyEntityFromDatabase_ById_ReturnEntity()
+    {
+        // Arrange
+        var productionCompanyRepository = new ProductionCompanyRepository(_context);
+        var productionCompanyEntity = new ProductionCompanyEntity { CompanyName = "Test" };
+        await productionCompanyRepository.InsertOneAsync(productionCompanyEntity);
+
+        // Act
+        var result = await productionCompanyRepository.SelectOneAsync(1);
 
         // Assert
         Assert.NotNull(result);

@@ -41,7 +41,7 @@ public class GenreRepository_Tests
     }
 
     [Fact]
-    public async Task SelectOneAsync_ShouldGetOnegenreEntityFromDatabase_ReturnEntity()
+    public async Task SelectOneAsync_ShouldGetOnegenreEntityFromDatabase_ByName_ReturnEntity()
     {
         // Arrange
         var genreRepository = new GenreRepository(_context);
@@ -50,6 +50,21 @@ public class GenreRepository_Tests
 
         // Act
         var result = await genreRepository.SelectOneAsync(genreEntity.GenreName);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task SelectOneAsync_ShouldGetOnegenreEntityFromDatabase_ById_ReturnEntity()
+    {
+        // Arrange
+        var genreRepository = new GenreRepository(_context);
+        var genreEntity = new GenreEntity { GenreName = "Test" };
+        await genreRepository.InsertOneAsync(genreEntity);
+
+        // Act
+        var result = await genreRepository.SelectOneAsync(1);
 
         // Assert
         Assert.NotNull(result);

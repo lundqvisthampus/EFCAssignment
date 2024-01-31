@@ -42,7 +42,7 @@ public class DirectorRepository_Tests
     }
 
     [Fact]
-    public async Task SelectOneAsync_ShouldGetOneDirectorEntityFromDatabase_ReturnEntity()
+    public async Task SelectOneAsync_ShouldGetOneDirectorEntityFromDatabase_ByName_ReturnEntity()
     {
         // Arrange
         var directorRepository = new DirectorRepository(_context);
@@ -51,6 +51,21 @@ public class DirectorRepository_Tests
 
         // Act
         var result = await directorRepository.SelectOneAsync(directorEntity.FirstName, directorEntity.LastName);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task SelectOneAsync_ShouldGetOneDirectorEntityFromDatabase_ById_ReturnEntity()
+    {
+        // Arrange
+        var directorRepository = new DirectorRepository(_context);
+        var directorEntity = new DirectorEntity { FirstName = "TestFirstName", LastName = "TestLastName", BirthDate = DateTime.Now };
+        await directorRepository.InsertOneAsync(directorEntity);
+
+        // Act
+        var result = await directorRepository.SelectOneAsync(1);
 
         // Assert
         Assert.NotNull(result);

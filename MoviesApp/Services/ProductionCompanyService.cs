@@ -110,7 +110,7 @@ public class ProductionCompanyService
     {
         try
         {
-            var company = await SelectOne(entity.CompanyName);
+            var company = await SelectOne(entity.Id);
             if (company != null)
             {
                 await _repository.UpdateAsync(entity);

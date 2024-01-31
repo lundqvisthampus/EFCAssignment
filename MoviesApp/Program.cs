@@ -26,4 +26,4 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 }).Build();
 
 var menu = builder.Services.GetRequiredService<ConsoleMenu>();
-menu.ShowMenu();
+await menu.ShowMenu();

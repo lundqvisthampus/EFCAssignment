@@ -31,8 +31,4 @@
     <ProjectReference Include="..\MoviesApp\MoviesApp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

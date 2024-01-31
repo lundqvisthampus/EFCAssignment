@@ -114,7 +114,7 @@ public class DirectorService
     {
         try
         {
-            var director = await SelectOne(entity.FirstName, entity.LastName);
+            var director = await SelectOne(entity.Id);
             if (director != null)
             {
                 await _repository.UpdateAsync(entity);

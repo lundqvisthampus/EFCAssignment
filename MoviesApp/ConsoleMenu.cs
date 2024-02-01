@@ -201,7 +201,7 @@ public class ConsoleMenu
                         }
                         else
                         {
-                            Console.WriteLine("Something went wrong, please enter a valid title");
+                            Console.WriteLine("Invalid title or movie not in database");
                         }
                         Console.ReadKey();
                         break;
@@ -215,56 +215,65 @@ public class ConsoleMenu
                             MovieDto movieDto = new MovieDto();
                             var movieToUpdate = await _movieService.SelectOne(updateMovie);
 
-                            Console.Clear();
-                            Console.WriteLine("-- Selected movie --");
-                            Console.WriteLine("---------------------------------------");
-                            Console.WriteLine($"\nTitle: {movieToUpdate.Title}");
-                            Console.WriteLine($"Release year: {movieToUpdate.ReleaseYear}");
-                            Console.WriteLine($"\nGenre: {movieToUpdate.GenreName}");
-                            Console.WriteLine($"\nDirector's name: {movieToUpdate.DirectorFirstName} {movieToUpdate.DirectorLastName}");
-                            Console.WriteLine($"Director's birthdate: {movieToUpdate.DirectorBirthDate}");
-                            Console.WriteLine($"\nProduction company: {movieToUpdate.ProductionCompanyName}");
-                            Console.WriteLine($"\nAvailabe for watching: {movieToUpdate.ProviderName}");
-                            Console.WriteLine("---------------------------------------");
-
-                            Console.Write("\nNew title: ");
-                            movieDto.Title = Console.ReadLine()!;
-
-                            Console.Write("New release year: ");
-                            int.TryParse(Console.ReadLine(), out int newReleaseYear);
-                            movieDto.ReleaseYear = newReleaseYear;
-
-                            Console.Write("New genre: ");
-                            movieDto.GenreName = Console.ReadLine()!;
-
-                            Console.Write("New director firstname: ");
-                            movieDto.DirectorFirstName = Console.ReadLine()!;
-
-                            Console.Write("New director lastname: ");
-                            movieDto.DirectorLastName = Console.ReadLine()!;
-
-                            Console.Write("New director birthdate: ");
-                            if (DateTime.TryParse(Console.ReadLine(), out DateTime newBirthDate))
+                            if (movieToUpdate != null)
                             {
-                                movieDto.DirectorBirthDate = newBirthDate;
-                            }
+                                Console.Clear();
+                                Console.WriteLine("-- Selected movie --");
+                                Console.WriteLine("---------------------------------------");
+                                Console.WriteLine($"\nTitle: {movieToUpdate.Title}");
+                                Console.WriteLine($"Release year: {movieToUpdate.ReleaseYear}");
+                                Console.WriteLine($"\nGenre: {movieToUpdate.GenreName}");
+                                Console.WriteLine($"\nDirector's name: {movieToUpdate.DirectorFirstName} {movieToUpdate.DirectorLastName}");
+                                Console.WriteLine($"Director's birthdate: {movieToUpdate.DirectorBirthDate}");
+                                Console.WriteLine($"\nProduction company: {movieToUpdate.ProductionCompanyName}");
+                                Console.WriteLine($"\nAvailabe for watching: {movieToUpdate.ProviderName}");
+                                Console.WriteLine("---------------------------------------");
 
-                            Console.Write("New production company: ");
-                            movieDto.ProductionCompanyName = Console.ReadLine()!;
+                                Console.Write("\nNew title: ");
+                                movieDto.Title = Console.ReadLine()!;
 
-                            Console.Write("New movie provider (Ex. Netflix): ");
-                            movieDto.ProviderName = Console.ReadLine()!;
+                                Console.Write("New release year: ");
+                                int.TryParse(Console.ReadLine(), out int newReleaseYear);
+                                movieDto.ReleaseYear = newReleaseYear;
 
-                            var isUpdated = await _movieService.Update(movieDto, updateMovie);
-                            Console.Clear();
-                            if (isUpdated)
-                            {
-                                Console.WriteLine("Movie was updated!");
+                                Console.Write("New genre: ");
+                                movieDto.GenreName = Console.ReadLine()!;
+
+                                Console.Write("New director firstname: ");
+                                movieDto.DirectorFirstName = Console.ReadLine()!;
+
+                                Console.Write("New director lastname: ");
+                                movieDto.DirectorLastName = Console.ReadLine()!;
+
+                                Console.Write("New director birthdate: ");
+                                if (DateTime.TryParse(Console.ReadLine(), out DateTime newBirthDate))
+                                {
+                                    movieDto.DirectorBirthDate = newBirthDate;
+                                }
+
+                                Console.Write("New production company: ");
+                                movieDto.ProductionCompanyName = Console.ReadLine()!;
+
+                                Console.Write("New movie provider (Ex. Netflix): ");
+                                movieDto.ProviderName = Console.ReadLine()!;
+
+                                var isUpdated = await _movieService.Update(movieDto, updateMovie);
+                                Console.Clear();
+                                if (isUpdated)
+                                {
+                                    Console.WriteLine("Movie was updated!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Something went wrong, movie not updated.");
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("Something went wrong, movie not updated.");
+                                Console.Clear();
+                                Console.WriteLine("Movie not found.");
                             }
+
                         }
                         Console.ReadKey();
                         break;

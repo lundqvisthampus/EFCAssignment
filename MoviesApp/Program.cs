@@ -11,6 +11,8 @@ using MoviesApp.Services;
 var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 {
     services.AddDbContext<MovieDatabaseContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Coding\EC-code\CSharp\EFCAssignment\MoviesApp\Data\MovieDatabase.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
+    services.AddDbContext<ProductCatalogContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Coding\EC-code\CSharp\EFCAssignment\MoviesApp\Data\ProductCatalog.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
+
     services.AddSingleton<DirectorRepository>();
     services.AddSingleton<GenreRepository>();
     services.AddSingleton<MovieProviderRepository>();

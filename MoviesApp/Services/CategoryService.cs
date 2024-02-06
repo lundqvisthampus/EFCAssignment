@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using MoviesApp.Contexts;
-using MoviesApp.Entities;
+﻿using MoviesApp.Entities;
 using MoviesApp.Repositories;
 using System.Diagnostics;
 using System.Linq.Expressions;

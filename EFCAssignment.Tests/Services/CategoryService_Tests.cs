@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoviesApp.Contexts;
-using MoviesApp.Dtos;
 using MoviesApp.Entities;
 using MoviesApp.Repositories;
 using MoviesApp.Services;

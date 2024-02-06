@@ -14,19 +14,12 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddDbContext<MovieDatabaseContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Coding\EC-code\CSharp\EFCAssignment\MoviesApp\Data\MovieDatabase.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
     services.AddDbContext<ProductCatalogContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Coding\EC-code\CSharp\EFCAssignment\MoviesApp\Data\ProductCatalog.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
 
-    // Repositories for the movie database
+    // Repositories and services for the movie database
     services.AddSingleton<DirectorRepository>();
     services.AddSingleton<GenreRepository>();
     services.AddSingleton<MovieProviderRepository>();
     services.AddSingleton<MovieRepository>();
     services.AddSingleton<ProductionCompanyRepository>();
-
-    // Repositories for the product database
-    services.AddSingleton<CategoryRepository>();
-    services.AddSingleton<ProductImagesRepository>();
-    services.AddSingleton<UserRepository>();
-    services.AddSingleton<ProductRepository>();
-    services.AddSingleton<ProductReviewRepository>();
 
     services.AddSingleton<DirectorService>();
     services.AddSingleton<GenreService>();
@@ -34,6 +27,17 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddSingleton<MovieService>();
     services.AddSingleton<ProductionCompanyService>();
     services.AddSingleton<ConsoleMenu>();
+
+    // Repositories and services for the product database
+    services.AddSingleton<CategoryRepository>();
+    services.AddSingleton<ProductImagesRepository>();
+    services.AddSingleton<UserRepository>();
+    services.AddSingleton<ProductRepository>();
+    services.AddSingleton<ProductReviewRepository>();
+
+    services.AddSingleton<CategoryService>();
+    services.AddSingleton<UserService>();
+    services.AddSingleton<ProductImagesService>();
 }).Build();
 
 var menu = builder.Services.GetRequiredService<ConsoleMenu>();

@@ -15,7 +15,7 @@ public class BaseRepository<TEntity> where TEntity : class
     }
 
     // CREATE
-    public async Task<TEntity> CreateAsync(TEntity entity)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
         try
         {
@@ -31,7 +31,7 @@ public class BaseRepository<TEntity> where TEntity : class
     }
 
     // READ
-    public async Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> expression)
+    public virtual async Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> expression)
     {
         try
         {
@@ -45,7 +45,7 @@ public class BaseRepository<TEntity> where TEntity : class
         }
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         try
         {
@@ -60,7 +60,7 @@ public class BaseRepository<TEntity> where TEntity : class
     }
     
     // UPDATE
-   public async Task<bool> UpdateAsync(Expression<Func<TEntity, bool>> expression, TEntity entity)
+   public virtual async Task<bool> UpdateAsync(Expression<Func<TEntity, bool>> expression, TEntity entity)
     {
         try
         {
@@ -76,13 +76,13 @@ public class BaseRepository<TEntity> where TEntity : class
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return false!;
+            return false;
         }
     }
 
 
     // DELETE
-    public async Task<bool> DeleteAsync(TEntity entity)
+    public virtual async Task<bool> DeleteAsync(TEntity entity)
     {
         try
         {
@@ -93,7 +93,7 @@ public class BaseRepository<TEntity> where TEntity : class
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return false!;
+            return false;
         }
     }
 }

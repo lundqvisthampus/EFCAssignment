@@ -38,6 +38,8 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddSingleton<CategoryService>();
     services.AddSingleton<UserService>();
     services.AddSingleton<ProductImagesService>();
+    services.AddSingleton<ProductService>();
+    services.AddSingleton<ProductReviewService>();
 }).Build();
 
 var menu = builder.Services.GetRequiredService<ConsoleMenu>();

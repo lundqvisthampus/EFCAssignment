@@ -19,7 +19,11 @@ public class ProductService
         _productImagesService = productImagesService;
     }
 
-    // CREATE
+    /// <summary>
+    /// Tries to add entity to DB if it doesnt already exist.
+    /// </summary>
+    /// <param name="productDto">Object with the data needed to create a product</param>
+    /// <returns>Entity if succeeded or already exists, else null</returns>
     public async Task<Product> CreateAsync(ProductDto productDto)
     {
         try
@@ -49,7 +53,11 @@ public class ProductService
         }
     }
 
-    // READ
+    /// <summary>
+    /// Tries to get entity from DB using the _productRepository.
+    /// </summary>
+    /// <param name="expression">Example (x => x.Id == Id)</param>
+    /// <returns>Entity if succeeded, else null</returns>
     public async Task<Product> GetOneAsync(Expression<Func<Product, bool>> expression)
     {
         try
@@ -64,6 +72,11 @@ public class ProductService
         }
     }
 
+
+    /// <summary>
+    /// Tries to get all entities from DB using the _productRepository.
+    /// </summary>
+    /// <returns>List of Product if succeeded, else null.</returns>
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
         try
@@ -78,7 +91,12 @@ public class ProductService
         }
     }
 
-    // UPDATE
+    /// <summary>
+    /// Tries to update entity in DB based an an expression and entity.
+    /// </summary>
+    /// <param name="expression">Example (x => x.Id == Id) to find entity in DB</param>
+    /// <param name="entity">Entity with the new values that the entity should update to.</param>
+    /// <returns>True if updated, else false.</returns>
     public async Task<bool> UpdateAsync(Expression<Func<Product, bool>> expression, Product entity)
     {
         try
@@ -93,7 +111,11 @@ public class ProductService
         }
     }
 
-    // DELETE
+    /// <summary>
+    /// Tries to delete entity from DB
+    /// </summary>
+    /// <param name="expression">Example (x => x.Id == Id)</param>
+    /// <returns>True if deleted, else false.</returns>
     public async Task<bool> DeleteAsync(Expression<Func<Product, bool>> expression)
     {
         try

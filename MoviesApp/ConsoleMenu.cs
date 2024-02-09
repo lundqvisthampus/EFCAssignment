@@ -299,7 +299,7 @@ public class ConsoleMenu
                     Console.WriteLine($"Product: {getReview.Product.ProductName}");
                     Console.WriteLine($"Product category: {getReview.Product.Category.CategoryName}");
                     Console.WriteLine($"Product price: {getReview.Product.Price}");
-                    Console.WriteLine($"Product image: {getReview.Product.ProductImage}");
+                    Console.WriteLine($"Product image: {getReview.Product.ProductImage.ImageUrl}");
                     Console.WriteLine($"Given rating: {getReview.Rating}");
                     Console.ReadKey();
                 }
